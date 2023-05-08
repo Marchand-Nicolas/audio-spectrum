@@ -14,6 +14,7 @@
 .boxContainer {
   display: flex;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .box {
@@ -22,8 +23,9 @@
   align-items: center;
   justify-content: center;
   padding: 45px;
-  width: 100%;
+  width: calc(100% - 40px);
   max-width: 400px;
+  min-width: 200px;
   margin: 50px auto;
   text-align: center;
   background: var(--menu-background);
