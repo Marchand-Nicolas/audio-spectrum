@@ -31,3 +31,13 @@
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
 }
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: var(--menu-foreground);
+  cursor: pointer;
+  border-radius: 2em;
+}

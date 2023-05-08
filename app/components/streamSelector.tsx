@@ -14,6 +14,7 @@ export default function StreamSelector({
   setState,
   audioInputDeviceId,
   audioOutputDeviceId,
+  playBackSource,
 }: {
   sourceType: Source;
   setSourceType: (sourceType: Source) => void;
@@ -23,6 +24,7 @@ export default function StreamSelector({
   setState: (state: State) => void;
   audioInputDeviceId: string | undefined;
   audioOutputDeviceId: string | undefined;
+  playBackSource: boolean;
 }) {
   const [file, setFile] = useState<File | null>(null);
 
@@ -36,10 +38,24 @@ export default function StreamSelector({
             : undefined,
         },
       };
+      const audio = document.createElement("audio");
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         setStream(stream);
         setState("playing");
+        // Play the stream
+        if (playBackSource) {
+          audio.srcObject = stream;
+          audio.onloadedmetadata = () => {
+            setAudioObject(audio);
+            (audio as any).setSinkId(audioOutputDeviceId);
+            audio.play();
+          };
+        }
       });
+      return () => {
+        audio.pause();
+        audio.srcObject = null;
+      };
     }
     if (sourceType === "file") {
       if (!file) {
@@ -53,6 +69,7 @@ export default function StreamSelector({
         setAudioObject(audio);
         (audio as any).setSinkId(audioOutputDeviceId);
         audio.play();
+        audio.volume = playBackSource ? 1 : 0.0000001;
         setStream((audio as any).captureStream());
         setState("playing");
       };
@@ -62,7 +79,14 @@ export default function StreamSelector({
         URL.revokeObjectURL(audio.src);
       };
     }
-  }, [sourceType, file, state, audioInputDeviceId, audioOutputDeviceId]);
+  }, [
+    sourceType,
+    file,
+    state,
+    audioInputDeviceId,
+    audioOutputDeviceId,
+    playBackSource,
+  ]);
 
   useEffect(() => {
     if (state === "home-empty") setFile(null);

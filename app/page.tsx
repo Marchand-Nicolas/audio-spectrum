@@ -21,6 +21,7 @@ export default function Home() {
   const [audioOutputDeviceId, setAudioOutputDeviceId] = useState<
     string | undefined
   >("");
+  const [playBackSource, setPlayBackSource] = useState<boolean>(true);
 
   return (
     <main className={styles.mainContainer} id="myButton">
@@ -28,6 +29,8 @@ export default function Home() {
         audioObject={audioObject}
         setState={setState}
         sourceType={sourceType}
+        playBackSource={playBackSource}
+        setPlayBackSource={setPlayBackSource}
       />
       <section>
         <StreamSelector
@@ -39,6 +42,7 @@ export default function Home() {
           setState={setState}
           audioInputDeviceId={audioInputDeviceId}
           audioOutputDeviceId={audioOutputDeviceId}
+          playBackSource={playBackSource}
         />
       </section>
       <section className={styles.graphContainer}>
