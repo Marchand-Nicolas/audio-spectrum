@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/components/controlBar.module.css";
 import { Source } from "../types/audio";
+import { State } from "../types/menus";
 
 export default function ControlBar({
   audioObject,
-  setShowStreamSelector,
+  setState,
   sourceType,
 }: {
   audioObject: HTMLAudioElement | null;
-  setShowStreamSelector: (showStreamSelector: boolean) => void;
+  setState: (state: State) => void;
   sourceType: Source;
 }) {
   const [time, setTime] = useState<number>(0);
@@ -33,7 +34,7 @@ export default function ControlBar({
         strokeWidth={1.5}
         stroke="currentColor"
         className={styles.icon}
-        onClick={() => setShowStreamSelector(true)}
+        onClick={() => setState("home-empty")}
       >
         <path
           strokeLinecap="round"
@@ -47,7 +48,7 @@ export default function ControlBar({
             title="slider"
             type="range"
             min="0"
-            max={maxTime}
+            max={isNaN(maxTime) ? 1000 : maxTime}
             step={0.01}
             className={styles.slider}
             onChange={(e) => setTime(Number(e.target.value))}

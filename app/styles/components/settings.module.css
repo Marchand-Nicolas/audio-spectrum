@@ -1,0 +1,16 @@
+.container {
+  background-color: white;
+  color: var(--menu-foreground);
+  border: 1px solid var(--menu-border);
+  border-radius: 1em;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  max-width: 450px;
+  min-height: 300px;
+  max-height: min(100%, 700px);
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+}

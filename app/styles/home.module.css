@@ -4,3 +4,16 @@
   left: 0;
   z-index: -1;
 }
+
+.settingsIcon {
+  width: 50px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.settingsIcon:hover {
+  transform: scale(1.1);
+}

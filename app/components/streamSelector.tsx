@@ -2,31 +2,43 @@ import { Source } from "@/app/types/audio";
 import styles from "../styles/components/streamSelector.module.css";
 import { useEffect, useState } from "react";
 import BottomPopup from "./popup/bottomPopup";
+import FileInput from "./elements/fileInput";
+import { State } from "../types/menus";
 
 export default function StreamSelector({
   sourceType,
   setSourceType,
   setStream,
   setAudioObject,
-  showStreamSelector,
-  setShowStreamSelector,
+  state,
+  setState,
+  audioInputDeviceId,
+  audioOutputDeviceId,
 }: {
   sourceType: Source;
   setSourceType: (sourceType: Source) => void;
   setStream: (stream: MediaStream | null) => void;
   setAudioObject: (audioObject: HTMLAudioElement | null) => void;
-  showStreamSelector: boolean;
-  setShowStreamSelector: (showStreamSelector: boolean) => void;
+  state: State;
+  setState: (state: State) => void;
+  audioInputDeviceId: string | undefined;
+  audioOutputDeviceId: string | undefined;
 }) {
   const [file, setFile] = useState<File | null>(null);
-  const [selectedSource, setSelectedSource] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!selectedSource) return;
+    if (state === "home-empty") return;
     if (sourceType === "mic") {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      const constraints: MediaStreamConstraints = {
+        audio: {
+          deviceId: audioInputDeviceId
+            ? { exact: audioInputDeviceId }
+            : undefined,
+        },
+      };
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         setStream(stream);
-        setShowStreamSelector(false);
+        setState("playing");
       });
     }
     if (sourceType === "file") {
@@ -39,9 +51,10 @@ export default function StreamSelector({
       audio.loop = true;
       audio.onloadedmetadata = () => {
         setAudioObject(audio);
+        (audio as any).setSinkId(audioOutputDeviceId);
         audio.play();
         setStream((audio as any).captureStream());
-        setShowStreamSelector(false);
+        setState("playing");
       };
       return () => {
         audio.pause();
@@ -49,22 +62,18 @@ export default function StreamSelector({
         URL.revokeObjectURL(audio.src);
       };
     }
-  }, [sourceType, file, showStreamSelector]);
+  }, [sourceType, file, state, audioInputDeviceId, audioOutputDeviceId]);
 
   useEffect(() => {
-    setFile(null);
-  }, [sourceType]);
+    if (state === "home-empty") setFile(null);
+  }, [state]);
 
   function selectSource(sourceType: Source) {
     setSourceType(sourceType);
-    setSelectedSource(true);
+    setState("home-source-selected");
   }
 
-  useEffect(() => {
-    setSelectedSource(false);
-  }, [showStreamSelector]);
-
-  return showStreamSelector ? (
+  return state !== "playing" ? (
     <div className={styles.container}>
       <h1 className="text-center">Spectre audio</h1>
       <div className={styles.boxContainer}>
@@ -103,17 +112,13 @@ export default function StreamSelector({
           <label htmlFor="mic">Microphone</label>
         </button>
       </div>
-      {sourceType === "file" && selectedSource ? (
+      {sourceType === "file" && state === "home-source-selected" ? (
         <BottomPopup>
-          <input
-            onChange={(e) => {
-              if (!e.target.files) return;
-              setFile(e.target.files[0]);
-            }}
-            title="fichier audio"
-            type="file"
-            accept="audio/*"
-          />
+          <FileInput accept="audio/*" callback={(files) => setFile(files[0])} />
+        </BottomPopup>
+      ) : sourceType === "mic" && state === "home-source-selected" ? (
+        <BottomPopup>
+          <p>Veuillez autoriser l'accès au microphone pour continuer</p>
         </BottomPopup>
       ) : null}
     </div>

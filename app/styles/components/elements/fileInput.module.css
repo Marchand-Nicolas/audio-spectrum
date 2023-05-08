@@ -1,0 +1,35 @@
+/* custom file input */
+
+.label {
+  display: inline-block;
+  padding: 0.5em 1em;
+  color: var(--menu-foreground);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--menu-background);
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.label:hover .icon {
+  transform: scale(1.1);
+}
+
+.label input[type="file"] {
+  display: none;
+}
+
+.icon {
+  color: var(--menu-foreground);
+  padding: 25px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 90px;
+}
