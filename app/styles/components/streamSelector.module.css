@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--background);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.boxContainer {
+  display: flex;
+  width: 100%;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 45px;
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+  background: var(--menu-background);
+  color: var(--menu-foreground);
+  border: 1px solid var(--menu-border);
+  border-radius: 1em;
+}
+
+.box label {
+  margin-top: 10px;
+  color: var(--menu-foreground);
+}
+
+.box,
+.box * {
+  cursor: pointer;
+}

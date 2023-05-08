@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: black;
+  --background: white;
+  --menu-background: transparent;
+  --menu-foreground: black;
+  --menu-border: black;
+}
+
+body {
+  background: var(--background);
+}
+
+body,
+p,
+label,
+h1 {
+  color: var(--foreground-rgb);
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
