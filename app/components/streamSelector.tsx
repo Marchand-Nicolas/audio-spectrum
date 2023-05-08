@@ -172,7 +172,7 @@ export default function StreamSelector({
           </p>
           <button
             onClick={() =>
-              window.open(`https://backend.heyko.fr/dl/audioSpectre`)
+              window.open(`https://backend.heyko.fr/dl/audioSpectreSetup.exe`)
             }
             className={styles.downloadButton}
           >
