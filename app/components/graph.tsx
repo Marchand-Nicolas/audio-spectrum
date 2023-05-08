@@ -19,6 +19,7 @@ export default function Graph({
     const dataArray = new Uint8Array(bufferLength);
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const canvasCtx = canvas.getContext("2d");
+    const circle = document.getElementById("circle") as HTMLDivElement;
     const interval = setInterval(() => {
       draw();
     }, 0);
@@ -63,6 +64,7 @@ export default function Graph({
         x += barWidth + 1;
       }
       barHeightAverage /= barNumber;
+      circle.style.height = `${barHeightAverage * 25}px`;
     }
 
     return () => {

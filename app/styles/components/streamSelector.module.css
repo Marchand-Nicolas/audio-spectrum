@@ -43,3 +43,14 @@
 .box * {
   cursor: pointer;
 }
+
+.downloadButton {
+  background-color: var(--menu-foreground);
+  border: 1px solid var(--menu-border);
+  margin-top: 20px;
+  border-radius: 2em;
+  padding: 10px 20px;
+  width: 250px;
+  cursor: pointer;
+  color: white;
+}

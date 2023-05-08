@@ -27,9 +27,11 @@ export default function StreamSelector({
   playBackSource: boolean;
 }) {
   const [file, setFile] = useState<File | null>(null);
+  const [browserSupport, setBrowserSupport] = useState<boolean>(true);
 
   useEffect(() => {
     if (state === "home-empty") return;
+    // As we are going to use experimental features, we need to check if the browser supports them, and add @ts-ignore in the code to avoid errors
     if (sourceType === "mic") {
       const constraints: MediaStreamConstraints = {
         audio: {
@@ -40,16 +42,25 @@ export default function StreamSelector({
       };
       const audio = document.createElement("audio");
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        setStream(stream);
-        setState("playing");
         // Play the stream
         if (playBackSource) {
           audio.srcObject = stream;
           audio.onloadedmetadata = () => {
             setAudioObject(audio);
-            (audio as any).setSinkId(audioOutputDeviceId);
+            try {
+              // @ts-ignore
+              audio.setSinkId(audioOutputDeviceId);
+            } catch (err) {
+              setBrowserSupport(false);
+              return;
+            }
             audio.play();
+            setStream(stream);
+            setState("playing");
           };
+        } else {
+          setStream(stream);
+          setState("playing");
         }
       });
       return () => {
@@ -67,10 +78,23 @@ export default function StreamSelector({
       audio.loop = true;
       audio.onloadedmetadata = () => {
         setAudioObject(audio);
-        (audio as any).setSinkId(audioOutputDeviceId);
+        try {
+          // @ts-ignore
+          audio.setSinkId(audioOutputDeviceId);
+        } catch (err) {
+          console.log(err);
+          setBrowserSupport(false);
+          return;
+        }
         audio.play();
         audio.volume = playBackSource ? 1 : 0.0000001;
-        setStream((audio as any).captureStream());
+        try {
+          // @ts-ignore
+          setStream(audio.captureStream());
+        } catch (err) {
+          setBrowserSupport(false);
+          return;
+        }
         setState("playing");
       };
       return () => {
@@ -136,7 +160,16 @@ export default function StreamSelector({
           <label htmlFor="mic">Microphone</label>
         </button>
       </div>
-      {sourceType === "file" && state === "home-source-selected" ? (
+
+      {!browserSupport ? (
+        <BottomPopup>
+          <p>
+            Navigateur non supporté. Veuillez télécharger notre application ou
+            utiliser un navigateur tel que Chrome, Edge, Opera, ...
+          </p>
+          <button className={styles.downloadButton}>Télécharger l'app</button>
+        </BottomPopup>
+      ) : sourceType === "file" && state === "home-source-selected" ? (
         <BottomPopup>
           <FileInput accept="audio/*" callback={(files) => setFile(files[0])} />
         </BottomPopup>

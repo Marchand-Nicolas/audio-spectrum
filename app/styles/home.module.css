@@ -12,8 +12,24 @@
   right: 10px;
   cursor: pointer;
   transition: 0.2s;
+  background-color: white;
+  border: 1px solid var(--menu-border);
+  border-radius: 1em;
 }
 
 .settingsIcon:hover {
   transform: scale(1.1);
+}
+
+.circle {
+  background-color: black;
+  position: fixed;
+  z-index: -1;
+  width: 100vw;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(100px);
+  opacity: 0.2;
+  border-radius: 100%;
 }

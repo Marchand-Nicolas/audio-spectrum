@@ -25,6 +25,9 @@ export default function Home() {
 
   return (
     <main className={styles.mainContainer} id="myButton">
+      {state === "playing" ? (
+        <div id="circle" className={styles.circle} />
+      ) : null}
       <ControlBar
         audioObject={audioObject}
         setState={setState}
