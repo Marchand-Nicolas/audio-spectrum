@@ -170,7 +170,12 @@ export default function StreamSelector({
             Navigateur non supporté. Veuillez télécharger notre application ou
             utiliser un navigateur tel que Chrome, Edge, Opera, ...
           </p>
-          <button className={styles.downloadButton}>
+          <button
+            onClick={() =>
+              window.open(`https://backend.heyko.org/dl/audioSpectre`)
+            }
+            className={styles.downloadButton}
+          >
             Télécharger l&apos;app
           </button>
         </BottomPopup>
