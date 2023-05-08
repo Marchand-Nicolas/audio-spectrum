@@ -110,6 +110,9 @@ export default function StreamSelector({
     audioInputDeviceId,
     audioOutputDeviceId,
     playBackSource,
+    setAudioObject,
+    setStream,
+    setState,
   ]);
 
   useEffect(() => {
@@ -167,7 +170,9 @@ export default function StreamSelector({
             Navigateur non supporté. Veuillez télécharger notre application ou
             utiliser un navigateur tel que Chrome, Edge, Opera, ...
           </p>
-          <button className={styles.downloadButton}>Télécharger l'app</button>
+          <button className={styles.downloadButton}>
+            Télécharger l&apos;app
+          </button>
         </BottomPopup>
       ) : sourceType === "file" && state === "home-source-selected" ? (
         <BottomPopup>
@@ -175,7 +180,7 @@ export default function StreamSelector({
         </BottomPopup>
       ) : sourceType === "mic" && state === "home-source-selected" ? (
         <BottomPopup>
-          <p>Veuillez autoriser l'accès au microphone pour continuer</p>
+          <p>Veuillez autoriser l&apos;accès au microphone pour continuer</p>
         </BottomPopup>
       ) : null}
     </div>
