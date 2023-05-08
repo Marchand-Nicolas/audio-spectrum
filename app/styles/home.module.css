@@ -12,8 +12,6 @@
   right: 10px;
   cursor: pointer;
   transition: 0.2s;
-  background-color: white;
-  border: 1px solid var(--menu-border);
   border-radius: 1em;
 }
 

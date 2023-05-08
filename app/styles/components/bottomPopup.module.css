@@ -6,4 +6,5 @@
   border: 1px solid var(--menu-border);
   padding: 25px;
   border-radius: 1em;
+  background-color: white;
 }
