@@ -19,33 +19,42 @@ export default function Graph({
     const dataArray = new Uint8Array(bufferLength);
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const canvasCtx = canvas.getContext("2d");
+    // Blured circle to add a depth effect. Follows the music
     const circle = document.getElementById("circle") as HTMLDivElement;
-    const interval = setInterval(() => {
-      draw();
-    }, 0);
+    // Start the animation
+    const interval = setInterval(draw, 0);
     function draw() {
       if (!canvasCtx) throw new Error("No canvas context");
+      // Canvas size
       const WIDTH = canvas.width;
       const HEIGHT = canvas.height;
+      // Reset the canvas
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      // Get the data from the analyser
       analyser.getByteTimeDomainData(dataArray);
+      // Begin the path
       canvasCtx.beginPath();
+      // The bigger the bars are, the less there are
       const barWidth = (WIDTH / bufferLength) * 5;
       let x = 0;
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
       analyser.getByteFrequencyData(dataArray);
       let barHeight;
+      // Bar height average to know if the music is loud or not
       let barHeightAverage = 0;
       let barNumber = 0;
       for (let i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
         barHeightAverage += barHeight;
         barNumber++;
-        // Background bars
+        // Colors
         const r = barHeight + 25 * (i / bufferLength);
         const g = 250 * (i / bufferLength);
         const b = 50;
+        // Background bar
+        // We divide the colors by 2 to have a darker background
         canvasCtx.fillStyle = `rgb(${r / 2},${g / 2},${b / 2})`;
+        // The more the music is loud, the more the background bars are high
         const backgroundBarHeight = barHeight * (1 + barHeightAverage / 10000);
         canvasCtx.fillRect(
           x,
@@ -61,13 +70,16 @@ export default function Graph({
           barWidth,
           barHeight * 2
         );
+        // Adding a little space between the bars
         x += barWidth + 1;
       }
       barHeightAverage /= barNumber;
+      // Background blured circle to add a depth effect
       circle.style.height = `${barHeightAverage * 25}px`;
     }
 
     return () => {
+      // Stop the animation and close the audio context
       clearInterval(interval);
       audioCtx.close();
     };

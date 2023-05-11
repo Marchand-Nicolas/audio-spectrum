@@ -33,6 +33,9 @@ export default function ControlBar({
 
   return (
     <div className={styles.container}>
+      {
+        // Left arrow icon : Return to home
+      }
       <svg
         fill="none"
         viewBox="0 0 24 24"
@@ -47,6 +50,9 @@ export default function ControlBar({
           d="M15.75 19.5L8.25 12l7.5-7.5"
         />
       </svg>
+      {
+        // Sound icon : Toggle sound
+      }
       <svg
         fill="none"
         viewBox="0 0 24 24"
@@ -69,6 +75,9 @@ export default function ControlBar({
           />
         )}
       </svg>
+      {
+        // Slider : Change time
+      }
       {sourceType === "file" ? (
         <>
           <input

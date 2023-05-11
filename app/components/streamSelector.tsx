@@ -87,6 +87,7 @@ export default function StreamSelector({
           return;
         }
         audio.play();
+        // We need to set the volume to 0.0000001 instead of 0 to prevent the audio from not playing, and stopping the stream
         audio.volume = playBackSource ? 1 : 0.0000001;
         try {
           // @ts-ignore
@@ -129,6 +130,9 @@ export default function StreamSelector({
       <h1 className="text-center">Spectre audio</h1>
       <div className={styles.boxContainer}>
         <button onClick={() => selectSource("file")} className={styles.box}>
+          {
+            // File icon
+          }
           <svg
             fill="none"
             viewBox="0 0 24 24"
@@ -146,6 +150,9 @@ export default function StreamSelector({
           <label htmlFor="file">Fichier</label>
         </button>
         <button onClick={() => selectSource("mic")} className={styles.box}>
+          {
+            // Microphone icon
+          }
           <svg
             fill="none"
             viewBox="0 0 24 24"
@@ -163,7 +170,9 @@ export default function StreamSelector({
           <label htmlFor="mic">Microphone</label>
         </button>
       </div>
-
+      {
+        // Bottom menus
+      }
       {!browserSupport ? (
         <BottomPopup>
           <p>

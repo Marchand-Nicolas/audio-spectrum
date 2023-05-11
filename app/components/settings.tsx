@@ -34,6 +34,7 @@ export default function Settings({
     try {
       // @ts-ignore
       navigator.permissions.query({ name: "microphone" }).then((result) => {
+        // If permission is denied or prompt, ask for permission
         if (result.state === "denied" || result.state === "prompt") {
           setError(
             "Permission refusée. Accès au microphone nécessaire pour gérer les appareils audio (entrées et sorties)."
@@ -78,6 +79,7 @@ export default function Settings({
     if (!navigator.mediaDevices?.enumerateDevices) {
       setError("Impossible de récupérer les appareils.");
     } else {
+      // Get audio devices
       let audioInput: MediaDeviceInfo[] = [];
       let audioOutput: MediaDeviceInfo[] = [];
       navigator.mediaDevices

@@ -25,6 +25,7 @@ export default function Home() {
   const [windowWidth, setWindowWidth] = useState<number>(0);
 
   useEffect(() => {
+    // Resize the canvas (graph) when the window is resized
     const onResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -38,6 +39,9 @@ export default function Home() {
       {state === "playing" ? (
         <div id="circle" className={styles.circle} />
       ) : null}
+      {
+        // Control bar (play, time, etc.)
+      }
       <ControlBar
         audioObject={audioObject}
         setState={setState}
@@ -45,6 +49,9 @@ export default function Home() {
         playBackSource={playBackSource}
         setPlayBackSource={setPlayBackSource}
       />
+      {
+        // Stream selector (file, mic, etc.)
+      }
       <section>
         <StreamSelector
           setSourceType={setSourceType}
@@ -58,12 +65,18 @@ export default function Home() {
           playBackSource={playBackSource}
         />
       </section>
+      {
+        // Graph (audio visualizer)
+      }
       <section className={styles.graphContainer}>
         {state === "playing" ? (
           <Graph stream={stream} sourceType={sourceType} key={windowWidth} />
         ) : null}
       </section>
       {menu}
+      {
+        // Settings icon : Open settings
+      }
       <svg
         fill="none"
         viewBox="0 0 24 24"
