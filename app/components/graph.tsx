@@ -24,6 +24,12 @@ export default function Graph({
     // Start the animation
     const interval = setInterval(draw, 1);
     let lastBarHeightAverage = 0;
+    let barHeightGlobalAverage = 0;
+    let barHeightGlobalAverageCount = 0;
+    let powerScores: number[] = [];
+    let barSpace = 1;
+    let state = 0;
+    let lastPowerScoreAverage = 0;
     function draw() {
       if (!canvasCtx) throw new Error("No canvas context");
       // Canvas size
@@ -49,15 +55,18 @@ export default function Graph({
         barHeightAverage += barHeight;
         barNumber++;
         // Colors
-        const r = barHeight + 25 * (i / bufferLength);
+        const r = state === 0 ? barHeight + 25 * (i / bufferLength) : 50;
         const g = 250 * (i / bufferLength);
-        const b = 50;
+        const b = state === 0 ? 50 : barHeight + 15 * (i / bufferLength);
         // Background bars
         // We divide the colors by 2 to have a darker background
         canvasCtx.fillStyle = `rgb(${r / 2},${g / 2},${b / 2})`;
         // The more the music is loud, the more the background bars are high
         const backgroundBarHeight =
-          barHeight * (1 + lastBarHeightAverage / 200);
+          barHeight *
+          (1 + lastBarHeightAverage / 200) *
+          (state === 0 ? 1 : 1.2) *
+          (lastPowerScoreAverage || 1);
         canvasCtx.fillRect(
           x,
           canvas.height - backgroundBarHeight / 2 - window.innerHeight / 2,
@@ -73,13 +82,45 @@ export default function Graph({
           barHeight
         );
         // Adding a little space between the bars
-        x += barWidth + 1;
+        x += barWidth + barSpace;
       }
       barHeightAverage /= barNumber;
       lastBarHeightAverage = barHeightAverage;
-      //console.log(lastBarHeightAverage);
-      // Background blured circle to add a depth effect
-      circle.style.height = `${barHeightAverage * 5}px`;
+      if (
+        !isNaN(barHeightAverage) &&
+        barHeightAverage !== 0 &&
+        !isNaN(lastBarHeightAverage) &&
+        lastBarHeightAverage !== 0
+      ) {
+        barHeightGlobalAverage += barHeightAverage;
+        barHeightGlobalAverageCount++;
+        const proportion =
+          barHeightAverage /
+          (barHeightGlobalAverage / barHeightGlobalAverageCount);
+        if (barHeightGlobalAverageCount > 1000) {
+          powerScores.push(proportion);
+          if (powerScores.length > 70) {
+            powerScores.shift();
+            const powerScoreAverage = powerScores.reduce((a, b) => a + b) / 70;
+            lastPowerScoreAverage = powerScoreAverage;
+            if (powerScoreAverage > 1.15 && state !== 1) {
+              barSpace = 0;
+              state = 1;
+            }
+            if (powerScoreAverage < 0.85 && state !== 0) {
+              barSpace = 1;
+              state = 0;
+            }
+          }
+        }
+        // Background blured circle to add a depth effect
+        const r = state === 0 ? 255 : 50;
+        const g = 50;
+        const b = state === 0 ? 50 : 255;
+        circle.style.height = `${barHeightAverage * 8}px`;
+        circle.style.backgroundColor = `rgb(${r},${g},${b})`;
+        circle.style.opacity = `${Math.min(Math.max(0.2, proportion / 3), 1)}`;
+      }
     }
 
     return () => {

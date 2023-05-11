@@ -15,6 +15,8 @@ export default function StreamSelector({
   audioInputDeviceId,
   audioOutputDeviceId,
   playBackSource,
+  file,
+  setFile,
 }: {
   sourceType: Source;
   setSourceType: (sourceType: Source) => void;
@@ -25,8 +27,9 @@ export default function StreamSelector({
   audioInputDeviceId: string | undefined;
   audioOutputDeviceId: string | undefined;
   playBackSource: boolean;
+  file: File | null;
+  setFile: (file: File | null) => void;
 }) {
-  const [file, setFile] = useState<File | null>(null);
   const [browserSupport, setBrowserSupport] = useState<boolean>(true);
 
   useEffect(() => {
@@ -190,7 +193,10 @@ export default function StreamSelector({
         </BottomPopup>
       ) : sourceType === "file" && state === "home-source-selected" ? (
         <BottomPopup>
-          <FileInput accept="audio/*" callback={(files) => setFile(files[0])} />
+          <FileInput
+            accept="audio/*,video/*"
+            callback={(files) => setFile(files[0])}
+          />
         </BottomPopup>
       ) : sourceType === "mic" && state === "home-source-selected" ? (
         <BottomPopup>

@@ -23,6 +23,7 @@ export default function Home() {
   >("");
   const [playBackSource, setPlayBackSource] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     // Resize the canvas (graph) when the window is resized
@@ -35,7 +36,22 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.mainContainer} id="myButton">
+    <main className={styles.mainContainer}>
+      {
+        // Show video if the file is a video
+      }
+      {state === "playing" &&
+      sourceType === "file" &&
+      file?.type.includes("video") ? (
+        <video
+          className={styles.video}
+          src={URL.createObjectURL(file)}
+          autoPlay
+          loop
+          muted
+          id="video"
+        />
+      ) : null}
       {state === "playing" ? (
         <div id="circle" className={styles.circle} />
       ) : null}
@@ -63,6 +79,8 @@ export default function Home() {
           audioInputDeviceId={audioInputDeviceId}
           audioOutputDeviceId={audioOutputDeviceId}
           playBackSource={playBackSource}
+          file={file}
+          setFile={setFile}
         />
       </section>
       {

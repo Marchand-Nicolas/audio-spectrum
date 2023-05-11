@@ -31,6 +31,15 @@ export default function ControlBar({
     return () => clearInterval(interval);
   }, [audioObject, time]);
 
+  useEffect(() => {
+    // Set video time to audio time
+    const videoBackground = document.getElementById(
+      "video"
+    ) as HTMLVideoElement;
+    if (videoBackground === null) return;
+    videoBackground.currentTime = time;
+  }, [time]);
+
   return (
     <div className={styles.container}>
       {
