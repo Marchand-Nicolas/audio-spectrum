@@ -22,7 +22,8 @@ export default function Graph({
     // Blured circle to add a depth effect. Follows the music
     const circle = document.getElementById("circle") as HTMLDivElement;
     // Start the animation
-    const interval = setInterval(draw, 0);
+    const interval = setInterval(draw, 1);
+    let lastBarHeightAverage = 0;
     function draw() {
       if (!canvasCtx) throw new Error("No canvas context");
       // Canvas size
@@ -51,31 +52,34 @@ export default function Graph({
         const r = barHeight + 25 * (i / bufferLength);
         const g = 250 * (i / bufferLength);
         const b = 50;
-        // Background bar
+        // Background bars
         // We divide the colors by 2 to have a darker background
         canvasCtx.fillStyle = `rgb(${r / 2},${g / 2},${b / 2})`;
         // The more the music is loud, the more the background bars are high
-        const backgroundBarHeight = barHeight * (1 + barHeightAverage / 10000);
+        const backgroundBarHeight =
+          barHeight * (1 + lastBarHeightAverage / 200);
         canvasCtx.fillRect(
           x,
-          canvas.height - backgroundBarHeight - window.innerHeight / 2,
+          canvas.height - backgroundBarHeight / 2 - window.innerHeight / 2,
           barWidth,
-          backgroundBarHeight * 2
+          backgroundBarHeight
         );
         // Bars
         canvasCtx.fillStyle = `rgb(${r},${g},${b})`;
         canvasCtx.fillRect(
           x,
-          canvas.height - barHeight - window.innerHeight / 2,
+          canvas.height - barHeight / 2 - window.innerHeight / 2,
           barWidth,
-          barHeight * 2
+          barHeight
         );
         // Adding a little space between the bars
         x += barWidth + 1;
       }
       barHeightAverage /= barNumber;
+      lastBarHeightAverage = barHeightAverage;
+      //console.log(lastBarHeightAverage);
       // Background blured circle to add a depth effect
-      circle.style.height = `${barHeightAverage * 25}px`;
+      circle.style.height = `${barHeightAverage * 5}px`;
     }
 
     return () => {
