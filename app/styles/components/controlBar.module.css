@@ -5,6 +5,7 @@
   align-items: center;
   border-bottom: var(--menu-border) 1px solid;
   background: var(--menu-background);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
