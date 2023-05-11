@@ -25,3 +25,8 @@ h1 {
   font-size: 2rem;
   line-height: 1.2;
 }
+
+.link {
+  color: var(--foreground-rgb);
+  text-decoration: underline;
+}

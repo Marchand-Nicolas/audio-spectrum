@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import styles from "../styles/components/settings.module.css";
 
 export default function Settings({
@@ -19,28 +19,82 @@ export default function Settings({
   const [audioOutputDevices, setAudioOutputDevices] = useState<
     MediaDeviceInfo[]
   >([]);
+  const [additionalContent, setAdditionalContent] = useState<ReactNode | null>(
+    null
+  );
+  const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
+    if (reload) {
+      setError(null);
+      setAdditionalContent(null);
+      setReload(false);
+      return;
+    }
+    try {
+      // @ts-ignore
+      navigator.permissions.query({ name: "microphone" }).then((result) => {
+        if (result.state === "denied" || result.state === "prompt") {
+          setError(
+            "Permission refusée. Accès au microphone nécessaire pour gérer les appareils audio (entrées et sorties)."
+          );
+          setAdditionalContent(
+            <>
+              <p>
+                Vous pouvez changer les permissions dans les paramètres de votre
+                navigateur.
+              </p>
+              <ul>
+                <li>
+                  <a
+                    className="link"
+                    href="https://support.google.com/chrome/answer/2693767?hl=fr"
+                  >
+                    Aide Chrome
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="link"
+                    href="https://support.mozilla.org/fr/kb/autoriser-bloquer-microphone-camera-ordinateur"
+                  >
+                    Aide Firefox
+                  </a>
+                </li>
+              </ul>
+            </>
+          );
+          // Ask for microphone permission
+          navigator.mediaDevices.getUserMedia({ audio: true });
+          // Reload on permission change
+          result.addEventListener("change", () => {
+            setReload((prev) => !prev);
+          });
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
     if (!navigator.mediaDevices?.enumerateDevices) {
       setError("Impossible de récupérer les appareils.");
     } else {
-      setAudioInputDevices([]);
-      setAudioOutputDevices([]);
+      let audioInput: MediaDeviceInfo[] = [];
+      let audioOutput: MediaDeviceInfo[] = [];
       navigator.mediaDevices
         .enumerateDevices()
         .then((devices) => {
           devices.forEach((device) => {
-            if (device.kind === "audioinput")
-              setAudioInputDevices((prev) => [...prev, device]);
-            if (device.kind === "audiooutput")
-              setAudioOutputDevices((prev) => [...prev, device]);
+            if (device.kind === "audioinput") audioInput.push(device);
+            if (device.kind === "audiooutput") audioOutput.push(device);
           });
+          setAudioInputDevices(audioInput);
+          setAudioOutputDevices(audioOutput);
         })
         .catch((err) => {
           console.error(`${err.name}: ${err.message}`);
         });
     }
-  }, []);
+  }, [setReload, reload]);
 
   return (
     <div className={styles.container}>
@@ -86,6 +140,7 @@ export default function Settings({
           ))}
         </>
       )}
+      {additionalContent}
     </div>
   );
 }
