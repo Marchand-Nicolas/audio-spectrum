@@ -1,3 +1,5 @@
+🇫🇷 : You can also read [French README.md](https://github.com/Marchand-Nicolas/audio-spectrum/blob/main/README_FR.md)
+
 ## Getting Started with "Audio Spectrum"
 Click on this [link](https://audio-spectrum-web.vercel.app/) to access the website. You will be asked to choose between two kind of audio input : File or Micro.
 ![image](https://github.com/Marchand-Nicolas/audio-spectrum/assets/60229704/3091011f-5682-4bb8-bde9-6f572dff88a6)
