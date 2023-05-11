@@ -1,7 +1,7 @@
 "use client";
 
 import Graph from "@/app/components/graph";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import styles from "@/app/styles/home.module.css";
 import { Source } from "@/app/types/audio";
 import StreamSelector from "@/app/components/streamSelector";
@@ -22,6 +22,16 @@ export default function Home() {
     string | undefined
   >("");
   const [playBackSource, setPlayBackSource] = useState<boolean>(true);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const onResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", onResize);
+    onResize();
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
     <main className={styles.mainContainer} id="myButton">
@@ -50,7 +60,7 @@ export default function Home() {
       </section>
       <section className={styles.graphContainer}>
         {state === "playing" ? (
-          <Graph stream={stream} sourceType={sourceType} />
+          <Graph stream={stream} sourceType={sourceType} key={windowWidth} />
         ) : null}
       </section>
       {menu}
