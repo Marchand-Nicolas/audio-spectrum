@@ -20,3 +20,8 @@ The app is powered by [electron](https://www.electronjs.org/), which simply load
 Other : 
  - [Typescript](https://www.typescriptlang.org/)
  - [Tailwind-css](https://tailwindcss.com/)
+
+## Styling
+
+The color and spacing of the bars, and the height of the background bars depend on the intensity of the music right now compared to the global intensity of the music
+![image](https://github.com/Marchand-Nicolas/audio-spectrum/assets/60229704/c690cf96-18d8-4c43-8807-d69a4ff78c08)

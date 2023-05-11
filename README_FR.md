@@ -18,3 +18,8 @@ L'application est alimentée par [electron](https://www.electronjs.org/), qui ch
 Autres : 
  - [Typescript](https://www.typescriptlang.org/)
  - [Tailwind-css](https://tailwindcss.com/)
+
+ ## Style
+
+La couleur et l'espacement des barres, ainsi que la hauteur des barres d'arrière-plan dépendent de l'intensité de la musique à l'instant par rapport à l'intensité globale de la musique.
+![image](https://github.com/Marchand-Nicolas/audio-spectrum/assets/60229704/c690cf96-18d8-4c43-8807-d69a4ff78c08)
