@@ -55,9 +55,9 @@ export default function Graph({
         barHeightAverage += barHeight;
         barNumber++;
         // Colors
-        const r = state === 0 ? barHeight + 25 * (i / bufferLength) : 50;
+        const r = state === 0 ? barHeight + 500 * (i / bufferLength) : 50;
         const g = 250 * (i / bufferLength);
-        const b = state === 0 ? 50 : barHeight + 15 * (i / bufferLength);
+        const b = state === 0 ? 50 : barHeight + 500 * (i / bufferLength);
         // Background bars
         // We divide the colors by 2 to have a darker background
         canvasCtx.fillStyle = `rgb(${r / 2},${g / 2},${b / 2})`;
