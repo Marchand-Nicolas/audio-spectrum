@@ -122,7 +122,11 @@ export default function Home() {
             strokeWidth={1.5}
             stroke="currentColor"
             className={styles.openDetailsMenuIcon}
-            onClick={() => setMenu(<Share file={file} setMenu={setMenu} />)}
+            onClick={() =>
+              setMenu(
+                <Share file={file} setMenu={setMenu} sourceType={sourceType} />
+              )
+            }
           >
             <path
               strokeLinecap="round"

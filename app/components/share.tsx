@@ -3,13 +3,16 @@ import styles from "../styles/components/share.module.css";
 import { useEffect, useState } from "react";
 import copyToClipBoard from "../utils/copyToClipBoard";
 import { useSearchParams } from "next/navigation";
+import { Source } from "../types/audio";
 
 export default function Share({
   setMenu,
   file,
+  sourceType,
 }: {
   setMenu: (menu: React.ReactNode) => void;
   file: File | null;
+  sourceType: Source;
 }) {
   const [shareLink, setShareLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,8 +21,9 @@ export default function Share({
   const customFileName = searchParams.get("file");
 
   useEffect(() => {
-    if (customFileName) setShareLink(window.location.href);
-  }, [customFileName]);
+    if (customFileName && sourceType === "url")
+      setShareLink(window.location.href);
+  }, [customFileName, sourceType]);
 
   return (
     <div className={styles.container}>
