@@ -25,3 +25,8 @@ Other :
 
 The color and spacing of the bars, and the height of the background bars depend on the intensity of the music right now compared to the global intensity of the music
 ![image](https://github.com/Marchand-Nicolas/audio-spectrum/assets/60229704/c690cf96-18d8-4c43-8807-d69a4ff78c08)
+
+## Linked repos
+
+ - https://github.com/Marchand-Nicolas/audio-spectrum-api
+ - https://github.com/Marchand-Nicolas/audio-spectrum-app
