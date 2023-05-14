@@ -43,3 +43,7 @@
   cursor: pointer;
   border-radius: 2em;
 }
+
+.slider:disabled {
+  opacity: 0.2;
+}

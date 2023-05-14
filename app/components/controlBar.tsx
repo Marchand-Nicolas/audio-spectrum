@@ -87,7 +87,7 @@ export default function ControlBar({
       {
         // Slider : Change time
       }
-      {sourceType === "file" ? (
+      {sourceType === "file" || sourceType === "url" ? (
         <>
           <input
             title="slider"
@@ -98,6 +98,7 @@ export default function ControlBar({
             className={styles.slider}
             onChange={(e) => setTime(Number(e.target.value))}
             id="slider"
+            disabled={sourceType === "url"}
           />
         </>
       ) : null}

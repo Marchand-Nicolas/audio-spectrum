@@ -8,6 +8,9 @@ import StreamSelector from "@/app/components/streamSelector";
 import ControlBar from "@/app/components/controlBar";
 import Settings from "./components/settings";
 import { State } from "./types/menus";
+import Share from "@/app/components/share";
+import { useSearchParams } from "next/navigation";
+import config from "./utils/config";
 
 export default function Home() {
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -26,6 +29,9 @@ export default function Home() {
   const [windowHeight, setWindowHeight] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
 
+  const searchParams = useSearchParams();
+  const customFileName = searchParams.get("file");
+
   useEffect(() => {
     // Resize the canvas (graph) when the window is resized
     const onResize = () => {
@@ -37,17 +43,26 @@ export default function Home() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  useEffect(() => {
+    // Clear the menu when the state changes
+    setMenu(null);
+  }, [state]);
+
   return (
     <main className={styles.mainContainer}>
       {
         // Show video if the file is a video
       }
       {state === "playing" &&
-      sourceType === "file" &&
-      file?.type.includes("video") ? (
+      (sourceType === "url" ||
+        (sourceType === "file" && file?.type.includes("video"))) ? (
         <video
           className={styles.video}
-          src={URL.createObjectURL(file)}
+          src={
+            sourceType === "file"
+              ? URL.createObjectURL(file as Blob)
+              : `${config.apiURL}/files/${customFileName}`
+          }
           autoPlay
           loop
           muted
@@ -98,6 +113,26 @@ export default function Home() {
           />
         ) : null}
       </section>
+      {
+        // Share
+        state === "playing" ? (
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={styles.openDetailsMenuIcon}
+            onClick={() => setMenu(<Share file={file} setMenu={setMenu} />)}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 15.75l7.5-7.5 7.5 7.5"
+            />
+          </svg>
+        ) : null
+      }
+
       {menu}
       {
         // Settings icon : Open settings

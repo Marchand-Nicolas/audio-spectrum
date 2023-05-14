@@ -1,1 +1,1 @@
-export type Source = "mic" | "file";
+export type Source = "mic" | "file" | "url";

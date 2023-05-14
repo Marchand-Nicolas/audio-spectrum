@@ -30,3 +30,13 @@ h1 {
   color: var(--foreground-rgb);
   text-decoration: underline;
 }
+
+.button {
+  background-color: var(--menu-foreground);
+  border: 1px solid var(--menu-border);
+  border-radius: 2em;
+  padding: 8px 16px;
+  width: 250px;
+  cursor: pointer;
+  color: white;
+}
