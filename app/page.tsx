@@ -23,12 +23,14 @@ export default function Home() {
   >("");
   const [playBackSource, setPlayBackSource] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowHeight, setWindowHeight] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     // Resize the canvas (graph) when the window is resized
     const onResize = () => {
       setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
     };
     window.addEventListener("resize", onResize);
     onResize();
@@ -88,7 +90,12 @@ export default function Home() {
       }
       <section className={styles.graphContainer}>
         {state === "playing" ? (
-          <Graph stream={stream} sourceType={sourceType} key={windowWidth} />
+          <Graph
+            stream={stream}
+            sourceType={sourceType}
+            windowWidth={windowWidth}
+            windowHeight={windowHeight}
+          />
         ) : null}
       </section>
       {menu}

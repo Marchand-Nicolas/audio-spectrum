@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 export default function Graph({
   stream,
   sourceType,
+  windowWidth,
+  windowHeight,
 }: {
   stream: MediaStream | null;
   sourceType: Source;
+  windowWidth: number;
+  windowHeight: number;
 }) {
   useEffect(() => {
     if (stream === null) return;
@@ -24,6 +28,7 @@ export default function Graph({
     // Start the animation
     const interval = setInterval(draw, 1);
     let lastBarHeightAverage = 0;
+    // Compute global average to know if the music is loud or not
     let barHeightGlobalAverage = 0;
     let barHeightGlobalAverageCount = 0;
     let powerScores: number[] = [];
@@ -132,8 +137,8 @@ export default function Graph({
   return (
     <canvas
       id="canvas"
-      width={window.innerWidth}
-      height={window.innerHeight}
+      width={windowWidth || window.innerWidth}
+      height={windowHeight || window.innerHeight}
     ></canvas>
   );
 }
