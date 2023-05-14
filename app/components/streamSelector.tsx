@@ -193,10 +193,17 @@ export default function StreamSelector({
         </BottomPopup>
       ) : sourceType === "file" && state === "home-source-selected" ? (
         <BottomPopup>
-          <FileInput
-            accept="audio/*,video/*"
-            callback={(files) => setFile(files[0])}
-          />
+          <div className="flex items-center flex-wrap">
+            <FileInput
+              accept="audio/*,video/*"
+              callback={(files) => setFile(files[0])}
+            />
+            <p>
+              Importez un fichier audio ou vidéo pour continuer. Les fichiers
+              vidéo permettront additionnelement d&apos;afficher un fond vidéo
+              coloré.
+            </p>
+          </div>
         </BottomPopup>
       ) : sourceType === "mic" && state === "home-source-selected" ? (
         <BottomPopup>
